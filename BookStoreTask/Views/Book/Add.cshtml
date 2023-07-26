@@ -1,0 +1,41 @@
+﻿@model AddBookViewModel
+@{
+    ViewData["Title"] = "Add Book";
+}
+
+<div class="w-50">
+    <form asp-controller="Book" asp-action="Add" method="post">
+        <div class="m-4 form-group">
+            <label asp-for="ISBN">Book ISBN</label>
+            <input asp-for="ISBN" class="form-control">
+            <span asp-validation-for="ISBN" class="text-danger"></span>
+        </div>
+
+        <div class="m-4 form-group">
+            <label asp-for="Title">Book Title</label>
+            <input asp-for="Title" class="form-control">
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="m-4 form-group">
+            <label asp-for="NumberOFCopies">Number Of Copies</label>
+            <input asp-for="NumberOFCopies" class="form-control">
+            <span asp-validation-for="NumberOFCopies" class="text-danger"></span>
+        </div>
+
+        <button  type="submit" class="btn btn-primary m-4">
+                Add
+        </button>
+    </form>
+    @if (TempData.ContainsKey("AddedSuccess"))
+    {
+        <h3 class="text-success">Book was Added Successfuly</h3>
+        TempData.Clear();
+
+    }
+    @if (TempData.ContainsKey("AddedFailure"))
+    {
+        <h3 class="text-danger">Book Already exists try changing ISBN</h3>
+        TempData.Clear();
+    }
+</div>

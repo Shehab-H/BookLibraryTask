@@ -1,0 +1,24 @@
+﻿@model ICollection<BookViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<h1>Books</h1>
+
+<hr style="border: none; border-bottom: 3px solid black;">
+<div  class="container book-container w-100 p-5">
+
+
+    @foreach(var book in Model)
+    {
+        <a asp-controller="Book" asp-action="Index" asp-route-ISBN="@book.ISBN" class="book">
+            <div class="m-3 p-3">
+                <img draggable="false" class="book-img" src="~/book-images/@book.ImageName" />
+                <h3>@book.Title</h3>
+            </div>
+        </a>
+    }
+</div>
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/book/book.index.css" asp-append-version="true" />
+}

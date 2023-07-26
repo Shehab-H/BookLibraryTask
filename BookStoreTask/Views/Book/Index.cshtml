@@ -1,0 +1,79 @@
+﻿@model BookViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container p-5">
+    <div class="row">
+        <div class="col-md-3">
+            <img draggable="false" class="book-img" src="~/book-images/@Model.ImageName" />
+        </div>
+        <div class="col-md-9">
+            <h1>@Model.Title</h1>
+            <p>#@Model.ISBN</p>
+            <h4>Available Copies : @Model.NoOfAvailableCopies</h4>
+            <div>
+                <button id="borrow-button" type="submit" 
+                    class="btn btn-primary mt-3">Borrow</button>
+                    <br />
+                    <span id="borrow-error" class="error-message text-danger"></span>
+                    <br />
+                <button id="return-button" type="submit" 
+                class="btn btn-secondary mt-3">Return</button>
+                <br />
+                <span id="return-error" class="error-message text-danger"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var borrowBtn = document.getElementById('borrow-button');
+    var returnBtn = document.getElementById('return-button');
+
+    var borrowError = document.getElementById('borrow-error');
+    var returnError = document.getElementById('return-error');
+
+    console.log(borrowError.textContent);
+    borrowBtn.addEventListener('click', async () => {
+        let response;
+        try {
+            response = await fetch(`Borrow/${@Model.ISBN}`, {
+                method: 'POST'
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+
+        if (response?.ok) {
+            location.reload();
+        }
+        else {
+            this.borrowError.textContent = "Book Copies Have Run Out";
+        }
+    });
+
+    returnBtn.addEventListener('click', async () => {
+        let response;
+        try {
+            response = await fetch(`Return/${@Model.ISBN}`, {
+                method: 'POST'
+            });
+        }
+        catch (error) {
+            console.log(error);
+        }
+
+        if (response?.ok) {
+            location.reload();
+        }
+        else {
+            this.returnError.textContent = "All Books Have Been Returned";
+        }
+    });
+</script>
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/book/book.index.css" asp-append-version="true" />
+}
